@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Nouvelle vente{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Nouvelle vente</h1>
+    <p>Enregistrer une vente et mettre à jour le stock automatiquement</p>
+</section>
+
+<section class="card card-narrow">
+    {% if plants %}
+        <form method="post" class="form">
+            <div class="form-group">
+                <label for="plant_id">Plante *</label>
+                <select id="plant_id" name="plant_id" required>
+                    <option value="">— Choisir une plante —</option>
+                    {% for plant in plants %}
+                        <option value="{{ plant.id }}">
+                            {{ plant.name }} — {{ plant.quantity }} en stock — {{ plant.price|mad }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Quantité *</label>
+                <input type="number" id="quantity" name="quantity" min="1" value="1" required>
+            </div>
+            <div class="form-group">
+                <label for="customer_name">Nom du client (optionnel)</label>
+                <input type="text" id="customer_name" name="customer_name" placeholder="Ex : Mme Dupont">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Valider la vente</button>
+                <a href="{{ url_for('sales.list_sales') }}" class="btn btn-ghost">Annuler</a>
+            </div>
+        </form>
+    {% else %}
+        <p class="text-muted">Aucune plante disponible en stock pour une vente.</p>
+        <a href="{{ url_for('plants.add_plant') }}" class="btn btn-primary">Ajouter du stock</a>
+    {% endif %}
+</section>
+{% endblock %}

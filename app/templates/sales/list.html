@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Ventes{% endblock %}
+
+{% block content %}
+<section class="page-header page-header-row">
+    <div>
+        <h1>Historique des ventes</h1>
+        <p>Suivi des transactions et chiffre d'affaires</p>
+    </div>
+    <a href="{{ url_for('sales.new_sale') }}" class="btn btn-primary">+ Nouvelle vente</a>
+</section>
+
+<div class="stats-grid stats-grid-compact">
+    <article class="stat-card">
+        <span class="stat-label">Ventes aujourd'hui</span>
+        <span class="stat-value">{{ stats.sales_today }}</span>
+    </article>
+    <article class="stat-card stat-card-highlight">
+        <span class="stat-label">CA du jour</span>
+        <span class="stat-value">{{ stats.revenue_today|mad }}</span>
+    </article>
+    <article class="stat-card">
+        <span class="stat-label">CA total</span>
+        <span class="stat-value">{{ stats.total_revenue|mad }}</span>
+    </article>
+</div>
+
+<section class="card">
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Plante</th>
+                    <th>Client</th>
+                    <th>Quantité</th>
+                    <th>Prix unitaire</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.sold_at[:16] }}</td>
+                        <td><strong>{{ sale.plant_name }}</strong> <em>({{ sale.plant_species }})</em></td>
+                        <td>{{ sale.customer_name or "—" }}</td>
+                        <td>{{ sale.quantity }}</td>
+                        <td>{{ sale.unit_price|mad }}</td>
+                        <td><strong>{{ sale.total_price|mad }}</strong></td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">Aucune vente enregistrée.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
