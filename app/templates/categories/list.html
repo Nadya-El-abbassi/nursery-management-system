@@ -5,42 +5,59 @@
 {% block content %}
 <section class="page-header page-header-row">
     <div>
-        <h1>Catégories produits</h1>
-        <p>Plantes, engrais, pots et autres types de produits</p>
+        <h1>Catégories de produits</h1>
+        <p>Organisez votre catalogue par type : végétaux, accessoires, outils et consommables.</p>
     </div>
-    <a href="{{ url_for('categories.add_category') }}" class="btn btn-primary">+ Ajouter une catégorie</a>
+    <a href="{{ url_for('categories.add_category') }}" class="btn btn-primary">+ Nouvelle catégorie</a>
 </section>
 
+<div class="stats-grid">
+    <article class="stat-card">
+        <span class="stat-label">Catégories actives</span>
+        <span class="stat-value">{{ categories|length }}</span>
+    </article>
+</div>
+
 <section class="card">
-    <div class="table-wrap">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nom</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for category in categories %}
+    <div class="card-header">
+        <h2>Liste des catégories</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td><strong>{{ category.name }}</strong></td>
-                        <td class="desc-cell">{{ category.description or "—" }}</td>
-                        <td class="actions-cell">
-                            <a href="{{ url_for('categories.edit_category', category_id=category.id) }}" class="btn btn-sm">Modifier</a>
-                            <form action="{{ url_for('categories.delete_category', category_id=category.id) }}" method="post" class="inline-form"
-                                  onsubmit="return confirm('Supprimer {{ category.name }} ?');">
-                                <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
-                            </form>
-                        </td>
+                        <th>Catégorie</th>
+                        <th>Présentation</th>
+                        <th>Actions</th>
                     </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3" class="text-center text-muted">Aucune catégorie enregistrée.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                        <tr>
+                            <td>
+                                <strong>{{ category.name }}</strong>
+                            </td>
+                            <td class="desc-cell">{{ category.description or "Aucune description renseignée." }}</td>
+                            <td class="actions-cell">
+                                <a href="{{ url_for('categories.edit_category', category_id=category.id) }}" class="btn btn-sm">Modifier</a>
+                                <form action="{{ url_for('categories.delete_category', category_id=category.id) }}" method="post" class="inline-form"
+                                      onsubmit="return confirm('Confirmer la suppression de « {{ category.name }} » ?');">
+                                    <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">
+                                Aucune catégorie pour le moment.
+                                <a href="{{ url_for('categories.add_category') }}">Créer la première catégorie</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 {% endblock %}
