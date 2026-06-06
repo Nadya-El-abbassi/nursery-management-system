@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pépinière{% endblock %} | Gestion Stock & Ventes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ai.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-inner">
+            <a href="{{ url_for('dashboard.index') }}" class="logo">
+                <span class="logo-icon">🌿</span>
+                <span>Pépinière Pro</span>
+            </a>
+            <nav class="nav">
+                <a href="{{ url_for('dashboard.index') }}" class="nav-link">Tableau de bord</a>
+                <a href="{{ url_for('plants.list_plants') }}" class="nav-link">Stock</a>
+                <a href="{{ url_for('categories.list_categories') }}" class="nav-link">Catégories</a>
+                <a href="{{ url_for('sales.list_sales') }}" class="nav-link">Ventes</a>
+                <a href="{{ url_for('sales.new_sale') }}" class="nav-link nav-link-accent">Nouvelle vente</a>
+                <a href="{{ url_for('ai.advisor') }}" class="nav-link nav-link-ai">Conseiller IA</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-group">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <a href="{{ url_for('dashboard.index') }}" class="footer-logo">
+                    <span class="logo-icon">🌿</span> Pépinière Pro
+                </a>
+                <p class="footer-tagline">
+                    Solution professionnelle de gestion de stock et de ventes pour pépinières au Maroc.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ url_for('dashboard.index') }}">Tableau de bord</a></li>
+                    <li><a href="{{ url_for('plants.list_plants') }}">Stock</a></li>
+                    <li><a href="{{ url_for('categories.list_categories') }}">Catégories</a></li>
+                    <li><a href="{{ url_for('sales.list_sales') }}">Ventes</a></li>
+                    <li><a href="{{ url_for('ai.advisor') }}">Conseiller IA</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul class="footer-contact">
+                    <li>📍 Casablanca, Maroc</li>
+                    <li>📞 +212 5 22 00 00 00</li>
+                    <li>✉️ contact@pepiniere-pro.ma</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Informations</h4>
+                <ul class="footer-contact">
+                    <li>Devise : MAD (dirham)</li>
+                    <li>Lun – Sam : 8h – 18h</li>
+                    <li>Version 1.0</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container footer-bottom-inner">
+                <p>&copy; 2026 Pépinière Pro. Tous droits réservés.</p>
+                <p class="footer-tech">Flask · SQLite · OpenAI · Projet Maintenance logicielle</p>
+            </div>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
