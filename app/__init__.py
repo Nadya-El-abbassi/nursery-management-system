@@ -5,6 +5,7 @@ from flask import Flask
 
 from app.config import Config
 from app.database import close_db, get_db, init_db
+from app.routes import categories
 
 
 def create_app(config_class=Config):
@@ -22,6 +23,7 @@ def create_app(config_class=Config):
     app.register_blueprint(plants.bp)
     app.register_blueprint(sales.bp)
     app.register_blueprint(ai.bp)
+    app.register_blueprint(categories.bp)
 
     app.teardown_appcontext(close_db)
 
