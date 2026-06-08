@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Tableau de bord</h1>
+    <p>Vue d'ensemble de votre pépinière</p>
+</section>
+
+<div class="stats-grid">
+    <article class="stat-card">
+        <span class="stat-label">Plantes en catalogue</span>
+        <span class="stat-value">{{ plant_count }}</span>
+    </article>
+    <article class="stat-card">
+        <span class="stat-label">Unités en stock</span>
+        <span class="stat-value">{{ total_stock }}</span>
+    </article>
+    <article class="stat-card">
+        <span class="stat-label">Ventes aujourd'hui</span>
+        <span class="stat-value">{{ stats.sales_today }}</span>
+    </article>
+    <article class="stat-card stat-card-highlight">
+        <span class="stat-label">CA du jour</span>
+        <span class="stat-value">{{ stats.revenue_today|mad }}</span>
+    </article>
+    <article class="stat-card">
+        <span class="stat-label">CA total</span>
+        <span class="stat-value">{{ stats.total_revenue|mad }}</span>
+    </article>
+</div>
+
+<div class="grid-2">
+    <section class="card">
+        <div class="card-header">
+            <h2>Actions rapides</h2>
+        </div>
+        <div class="card-body quick-actions">
+            <a href="{{ url_for('plants.add_plant') }}" class="btn btn-primary">+ Ajouter une plante</a>
+            <a href="{{ url_for('sales.new_sale') }}" class="btn btn-secondary">Enregistrer une vente</a>
+            <a href="{{ url_for('ai.advisor') }}" class="btn btn-ai">Conseiller IA</a>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card-header">
+            <h2>Alertes stock bas</h2>
+        </div>
+        <div class="card-body">
+            {% if low_stock %}
+                <ul class="alert-list">
+                    {% for plant in low_stock %}
+                        <li class="alert-item">
+                            <strong>{{ plant.name }}</strong>
+                            <span class="badge badge-warning">{{ plant.quantity }} restant(s)</span>
+                            <span class="text-muted">seuil : {{ plant.alert_threshold }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Aucune alerte — tous les stocks sont suffisants.</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}
