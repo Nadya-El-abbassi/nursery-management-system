@@ -3,7 +3,9 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from app.services.plant_service import PlantService
 
 bp = Blueprint("plants", __name__, url_prefix="/plants")
-plant_service = PlantService()
+from app.factories.service_factory import ServiceFactory
+
+plant_service = ServiceFactory.create_plant_service()
 
 
 @bp.route("/")
