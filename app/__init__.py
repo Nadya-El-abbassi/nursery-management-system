@@ -2,6 +2,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from flask import Flask
+from flask_wtf.csrf import CSRFProtect  # Add this import
 
 from app.config import Config
 from app.database import close_db, get_db, init_db
@@ -13,11 +14,15 @@ def create_app(config_class=Config):
 
     app = Flask(__name__)
     app.config.from_object(config_class)
+    
+    # Enable CSRF protection
+    csrf = CSRFProtect()
+    csrf.init_app(app)
 
     data_dir = Path(app.config["DATABASE"]).parent
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    from app.routes import ai, dashboard, plants, sales
+    from app.routes import ai, dashboard, plants, sales, categories
 
     app.register_blueprint(dashboard.bp)
     app.register_blueprint(plants.bp)
