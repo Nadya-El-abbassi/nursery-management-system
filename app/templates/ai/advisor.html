@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import csrf_field %}
 
 {% block title %}Conseiller IA{% endblock %}
 
@@ -22,6 +23,7 @@
         <div class="card-body">
             <p class="text-muted">Demandez quoi commander, quels produits sont en rupture ou en stock faible.</p>
             <form method="post" class="form">
+                {{ csrf_field() }}
                 <input type="hidden" name="action" value="stock">
                 <div class="form-group">
                     <label for="stock_question">Votre question</label>
@@ -44,6 +46,7 @@
         <div class="card-body">
             <p class="text-muted">Décrivez votre jardin, balcon ou besoin — l'IA recommande 3 plantes disponibles en stock.</p>
             <form method="post" class="form">
+                {{ csrf_field() }}
                 <input type="hidden" name="action" value="recommend">
                 <div class="form-group">
                     <label for="garden_description">Votre besoin</label>
@@ -64,6 +67,7 @@
         <div class="card-body">
             <p class="text-muted">Créez automatiquement une description commerciale pour une nouvelle plante.</p>
             <form method="post" class="form">
+                {{ csrf_field() }}
                 <input type="hidden" name="action" value="description">
                 <div class="form-group">
                     <label for="plant_name">Nom de la plante</label>

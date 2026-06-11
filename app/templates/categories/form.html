@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import csrf_field %}
 
 {% block title %}{% if action == 'add' %}Ajouter{% else %}Modifier{% endif %} une catégorie{% endblock %}
 
@@ -10,6 +11,7 @@
 
 <section class="card card-narrow">
     <form method="post" class="form">
+        {{ csrf_field() }}
         <div class="form-group">
             <label for="name">Nom *</label>
             <input type="text" id="name" name="name" required
