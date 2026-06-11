@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import csrf_field %}
 
 {% block title %}Nouvelle vente{% endblock %}
 
@@ -11,6 +12,7 @@
 <section class="card card-narrow">
     {% if plants %}
         <form method="post" class="form">
+            {{ csrf_field() }}
             <div class="form-group">
                 <label for="plant_id">Plante *</label>
                 <select id="plant_id" name="plant_id" required>

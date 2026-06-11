@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import csrf_field %}
 
 {% block title %}Stock{% endblock %}
 
@@ -43,6 +44,7 @@
                             <a href="{{ url_for('plants.edit_plant', plant_id=plant.id) }}" class="btn btn-sm">Modifier</a>
                             <form action="{{ url_for('plants.delete_plant', plant_id=plant.id) }}" method="post" class="inline-form"
                                   onsubmit="return confirm('Supprimer {{ plant.name }} ?');">
+                                {{ csrf_field() }}
                                 <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
                             </form>
                         </td>
