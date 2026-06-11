@@ -2,13 +2,13 @@
 
 ##  Description du Notre  projet
 
-Application web de gestion de stock et de ventes destinée à une pépinière.
+Smart Nursery est une application web de gestion de stock et de ventes destinée à une pépinière.
 Elle permet de gérer les plantes, les catégories, les ventes, ainsi qu’un conseiller IA pour assister la gestion commerciale.
 
 ##  Équipe du projet
 
 
-Nadia El Aabassi :Workflow & Release Manager
+* Nadia El Aabassi :Workflow & Release Manager
 * Douaa MOUYASSIR  : Feature Lead
 * Yassmine Soufary : AI Lead 
 * Siham Loukch : Quality Lead 
@@ -22,14 +22,14 @@ Nadia El Aabassi :Workflow & Release Manager
 *  Backend : Python Flask
 *  Base de données : SQLite
 *  API IA : clé API Grok
-
+*  Architecture : MVC (Routes / Services / Repositories)
 
 
 ##  Fonctionnalités principales
 
  Tableau de bord
 
-* Vue globale : nombre de plantes, stock total
+* Vue globale du stock  : nombre de plantes, stock total
 * Ventes du jour
 * Chiffre d’affaires du jour et total (MAD)
 * Alertes de stock faible
@@ -87,9 +87,24 @@ Nadia El Aabassi :Workflow & Release Manager
 * Base de données locale SQLite
 * Système de notifications (flash messages)
 
--
+
+ ## Impact métier & cas d’usage réel
+
+Cette application est conçue pour répondre à un besoin concret des pépinières :
+
+* Réduction des pertes liées aux erreurs de stock
+* Meilleur suivi des plantes à forte rotation
+* Aide à la décision pour le réapprovisionnement
+* Amélioration de la rentabilité grâce au suivi du chiffre d’affaires en temps réel
+* Digitalisation complète d’un processus traditionnel souvent manuel
+
 ## Objectif du projet
 
 Optimiser la gestion d’une pépinière en automatisant le suivi du stock, des ventes et en intégrant un assistant intelligent pour améliorer la prise de décision.
 
+## Améliorations futures
 
+* Application mobile 
+* Authentification utilisateur 
+* Dashboard analytics avancé 
+* Export PDF des ventes 
