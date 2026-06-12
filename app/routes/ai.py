@@ -36,8 +36,8 @@ def advisor():
                 }
         except ValueError as exc:
             flash(str(exc), "error")
-        except Exception:
-            flash("Erreur lors de l'appel à l'IA. Vérifiez votre clé API.", "error")
+        except Exception as exc:
+            flash(ai_service.format_api_error(exc), "error")
 
     return render_template(
         "ai/advisor.html",
