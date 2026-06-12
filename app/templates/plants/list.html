@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% from "macros.html" import csrf_field %}
+
+{% block title %}Stock{% endblock %}
+
+{% block content %}
+<section class="page-header page-header-row">
+    <div>
+        <h1>Gestion du stock</h1>
+        <p>Catalogue des plantes et niveaux de stock</p>
+    </div>
+    <a href="{{ url_for('plants.add_plant') }}" class="btn btn-primary">+ Ajouter une plante</a>
+</section>
+
+<section class="card">
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Espèce</th>
+                    <th>Prix unitaire</th>
+                    <th>Quantité</th>
+                    <th>Seuil alerte</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plant in plants %}
+                    <tr class="{% if plant.id in low_stock_ids %}row-warning{% endif %}">
+                        <td><strong>{{ plant.name }}</strong></td>
+                        <td><em>{{ plant.species }}</em></td>
+                        <td>{{ plant.price|mad }}</td>
+                        <td>
+                            {{ plant.quantity }}
+                            {% if plant.id in low_stock_ids %}
+                                <span class="badge badge-warning">Bas</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ plant.alert_threshold }}</td>
+                        <td class="desc-cell">{{ plant.description or "—" }}</td>
+                        <td class="actions-cell">
+                            <a href="{{ url_for('plants.edit_plant', plant_id=plant.id) }}" class="btn btn-sm">Modifier</a>
+                            <form action="{{ url_for('plants.delete_plant', plant_id=plant.id) }}" method="post" class="inline-form"
+                                  onsubmit="return confirm('Supprimer {{ plant.name }} ?');">
+                                {{ csrf_field() }}
+                                <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted">Aucune plante enregistrée.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

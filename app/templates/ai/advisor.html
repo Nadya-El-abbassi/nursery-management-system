@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% from "macros.html" import csrf_field %}
+
+{% block title %}Conseiller IA{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h1>Conseiller IA</h1>
+    <p>Recommandations personnalisées et génération de fiches produit via OpenAI</p>
+</section>
+
+{% if not ai_configured %}
+    <div class="flash flash-error">
+        Clé API non configurée. Copiez <code>.env.example</code> vers <code>.env</code> et ajoutez votre <code>OPENAI_API_KEY</code>.
+    </div>
+{% endif %}
+
+<div class="grid-2">
+    <section class="card">
+        <div class="card-header">
+            <h2>Assistant gestion stock</h2>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Demandez quoi commander, quels produits sont en rupture ou en stock faible.</p>
+            <form method="post" class="form">
+                {{ csrf_field() }}
+                <input type="hidden" name="action" value="stock">
+                <div class="form-group">
+                    <label for="stock_question">Votre question</label>
+                    <textarea id="stock_question" name="stock_question" rows="4" required
+                              placeholder="Ex : Quels produits dois-je recommander en urgence ?"></textarea>
+                </div>
+                <button type="submit" class="btn btn-ai" {% if not ai_configured %}disabled{% endif %}>
+                    Analyser le stock
+                </button>
+            </form>
+        </div>
+    </section>
+</div>
+
+<div class="grid-2">
+    <section class="card">
+        <div class="card-header">
+            <h2>Recommandation de plantes</h2>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Décrivez votre jardin, balcon ou besoin — l'IA recommande 3 plantes disponibles en stock.</p>
+            <form method="post" class="form">
+                {{ csrf_field() }}
+                <input type="hidden" name="action" value="recommend">
+                <div class="form-group">
+                    <label for="garden_description">Votre besoin</label>
+                    <textarea id="garden_description" name="garden_description" rows="5" required
+                              placeholder="Ex : Petit balcon ensoleillé à Marseille, je cherche des plantes méditerranéennes faciles d'entretien."></textarea>
+                </div>
+                <button type="submit" class="btn btn-ai" {% if not ai_configured %}disabled{% endif %}>
+                    Obtenir des recommandations
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="card-header">
+            <h2>Générer une fiche produit</h2>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Créez automatiquement une description commerciale pour une nouvelle plante.</p>
+            <form method="post" class="form">
+                {{ csrf_field() }}
+                <input type="hidden" name="action" value="description">
+                <div class="form-group">
+                    <label for="plant_name">Nom de la plante</label>
+                    <input type="text" id="plant_name" name="plant_name" required placeholder="Ex : Basilic">
+                </div>
+                <div class="form-group">
+                    <label for="species">Espèce</label>
+                    <input type="text" id="species" name="species" required placeholder="Ex : Ocimum basilicum">
+                </div>
+                <button type="submit" class="btn btn-ai" {% if not ai_configured %}disabled{% endif %}>
+                    Générer la description
+                </button>
+            </form>
+        </div>
+    </section>
+</div>
+
+{% if result %}
+    <section class="card ai-result">
+        <div class="card-header">
+            <h2>Résultat IA</h2>
+        </div>
+        <div class="card-body">
+            {% if result.type == 'recommend' %}
+                <p class="ai-intro">{{ result.data.introduction }}</p>
+                <div class="recommendations">
+                    {% for rec in result.data.recommendations %}
+                        <article class="rec-card">
+                            <h3>{{ rec.name }}</h3>
+                            <p>{{ rec.reason }}</p>
+                        </article>
+                    {% endfor %}
+                </div>
+                {% if result.data.care_tips %}
+                    <div class="care-tips">
+                        <strong>Conseils d'entretien :</strong>
+                        <p>{{ result.data.care_tips }}</p>
+                    </div>
+                {% endif %}
+            {% elif result.type == 'description' %}
+                <div class="generated-description">
+                    <p>{{ result.data }}</p>
+                </div>
+            {% elif result.type == 'stock' %}
+                <div class="generated-description">
+                    <p>{{ result.data }}</p>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}
+{% endblock %}

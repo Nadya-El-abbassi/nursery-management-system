@@ -4,6 +4,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from flask import Flask
+from flask_wtf.csrf import CSRFProtect  # Add this import
 from jinja2 import ChoiceLoader, FileSystemLoader
 
 from app.config import Config
@@ -23,6 +24,10 @@ def create_base_app(config_class=Config):
         static_url_path="/static",
     )
     app.config.from_object(config_class)
+
+    # Enable CSRF protection
+    csrf = CSRFProtect()
+    csrf.init_app(app)
 
     data_dir = Path(app.config["DATABASE"]).parent
     data_dir.mkdir(parents=True, exist_ok=True)
