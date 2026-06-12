@@ -6,12 +6,12 @@
 {% block content %}
 <section class="page-header">
     <h1>Conseiller IA</h1>
-    <p>Recommandations personnalisées et génération de fiches produit via OpenAI</p>
+    <p>Recommandations personnalisées et génération de fiches produit via Groq</p>
 </section>
 
 {% if not ai_configured %}
     <div class="flash flash-error">
-        Clé API non configurée. Copiez <code>.env.example</code> vers <code>.env</code> et ajoutez votre <code>OPENAI_API_KEY</code>.
+        Clé API non configurée. Ajoutez votre <code>GROQ_API_KEY</code> dans le fichier <code>.env</code> (https://console.groq.com/keys).
     </div>
 {% endif %}
 
